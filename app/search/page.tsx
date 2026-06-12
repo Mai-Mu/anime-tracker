@@ -70,10 +70,11 @@ export default function SearchPage() {
             <div className="relative aspect-[3/4] bg-muted">
               {anime.cover_url ? (
                 <Image
-                  src={anime.cover_url}
+                  src={`/api/cover?url=${encodeURIComponent(anime.cover_url)}`}
                   alt={anime.title}
                   fill
                   className="object-cover"
+                  unoptimized
                 />
               ) : (
                 <div className="flex items-center justify-center h-full text-muted-foreground">

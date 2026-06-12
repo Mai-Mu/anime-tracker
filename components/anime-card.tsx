@@ -31,10 +31,11 @@ export function AnimeCard({ record, onUpdate }: AnimeCardProps) {
         <div className="relative aspect-[3/4] bg-muted">
           {record.cover_url ? (
             <Image
-              src={record.cover_url}
+              src={`/api/cover?url=${encodeURIComponent(record.cover_url)}`}
               alt={record.title || ''}
               fill
               className="object-cover"
+              unoptimized
             />
           ) : (
             <div className="flex items-center justify-center h-full text-muted-foreground">

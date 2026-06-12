@@ -39,6 +39,9 @@ yarn-error.log*
 # database
 /db
 
+# image cache
+/covers
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

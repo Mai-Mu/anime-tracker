@@ -103,10 +103,11 @@ export default function SeasonPage() {
                   <div className="relative aspect-[3/4] bg-muted rounded-lg overflow-hidden">
                     {item.images?.large || item.images?.common ? (
                       <Image
-                        src={item.images.large || item.images.common}
+                        src={`/api/cover?url=${encodeURIComponent(item.images.large || item.images.common)}`}
                         alt={item.name_cn || item.name}
                         fill
                         className="object-cover"
+                        unoptimized
                       />
                     ) : (
                       <div className="flex items-center justify-center h-full text-muted-foreground text-sm">

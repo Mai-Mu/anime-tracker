@@ -52,7 +52,7 @@ export default function AnimeDetailPage({ params }: { params: Promise<{ id: stri
         <div>
           <div className="relative aspect-[3/4] bg-muted rounded-lg overflow-hidden">
             {record.cover_url ? (
-              <Image src={record.cover_url} alt={record.title || ''} fill className="object-cover" />
+              <Image src={`/api/cover?url=${encodeURIComponent(record.cover_url)}`} alt={record.title || ''} fill className="object-cover" unoptimized />
             ) : (
               <div className="flex items-center justify-center h-full text-muted-foreground">无封面</div>
             )}
