@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { LogoutButton } from '@/components/logout-button';
+import { UserMenu } from '@/components/user-menu';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -21,7 +21,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <Link href="/search" className="text-muted-foreground hover:text-foreground transition-colors">搜索</Link>
               <Link href="/timeline" className="text-muted-foreground hover:text-foreground transition-colors">时间线</Link>
             </nav>
-            <LogoutButton />
+            <UserMenu />
           </div>
         </header>
         <main>{children}</main>
