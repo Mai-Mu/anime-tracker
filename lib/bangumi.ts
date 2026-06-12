@@ -13,12 +13,13 @@ interface BangumiSubject {
 }
 
 interface BangumiSearchResult {
-  data: Array<{
+  results: number;
+  list: Array<{
     id: number;
     name: string;
     name_cn: string;
-    image: string;
-    date: string;
+    images: { large: string; common: string; medium: string; small: string };
+    air_date: string;
     eps: number;
   }>;
 }
@@ -32,14 +33,37 @@ export async function searchAnime(keyword: string): Promise<Anime[]> {
 
   const data: BangumiSearchResult = await res.json();
 
-  return (data.data || []).map((item) => ({
+  return (data.list || []).map((item) => ({
     bangumi_id: item.id,
     title: item.name_cn || item.name,
-    cover_url: item.image || '',
-    air_date: item.date || '',
+    cover_url: item.images?.large || item.images?.common || '',
+    air_date: item.air_date || '',
     total_episodes: item.eps || 0,
     summary: '',
   }));
+}
+
+export interface CalendarDay {
+  weekday: { id: number; cn: string; en: string };
+  items: Array<{
+    id: number;
+    name: string;
+    name_cn: string;
+    air_date: string;
+    images: { large: string; common: string; medium: string; small: string };
+    rating: { score: number } | null;
+    collection: { doing: number };
+  }>;
+}
+
+export async function getCalendar(): Promise<CalendarDay[]> {
+  const res = await fetch(`${BANGUMI_API}/calendar`, {
+    headers: { 'User-Agent': 'anime-tracker/1.0' },
+    next: { revalidate: 3600 },
+  });
+
+  if (!res.ok) throw new Error(`Bangumi calendar failed: ${res.status}`);
+  return res.json();
 }
 
 export async function getSubject(subjectId: number): Promise<Anime> {

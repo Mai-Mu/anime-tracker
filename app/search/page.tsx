@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import Image from 'next/image';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -11,14 +11,28 @@ export default function SearchPage() {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<Anime[]>([]);
   const [loading, setLoading] = useState(false);
+  const [addedIds, setAddedIds] = useState<Set<number>>(new Set());
+
+  const fetchExistingIds = useCallback(async (): Promise<Set<number>> => {
+    try {
+      const res = await fetch('/api/anime');
+      const data: { bangumi_id: number }[] = await res.json();
+      return new Set(data.map((r) => r.bangumi_id));
+    } catch {
+      return new Set();
+    }
+  }, []);
 
   const handleSearch = async () => {
     if (!query.trim()) return;
     setLoading(true);
     try {
-      const res = await fetch(`/api/bangumi/search?q=${encodeURIComponent(query)}`);
-      const data = await res.json();
+      const [data, existing] = await Promise.all([
+        fetch(`/api/bangumi/search?q=${encodeURIComponent(query)}`).then((r) => r.json()),
+        fetchExistingIds(),
+      ]);
       setResults(data);
+      setAddedIds(existing);
     } catch {
       setResults([]);
     } finally {
@@ -27,11 +41,13 @@ export default function SearchPage() {
   };
 
   const handleAdd = async (anime: Anime) => {
+    if (addedIds.has(anime.bangumi_id)) return;
     await fetch('/api/anime', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ ...anime, status: 'planned' }),
     });
+    setAddedIds((prev) => new Set(prev).add(anime.bangumi_id));
   };
 
   return (
@@ -74,9 +90,11 @@ export default function SearchPage() {
               <Button
                 size="sm"
                 className="w-full mt-2"
+                variant={addedIds.has(anime.bangumi_id) ? 'secondary' : 'default'}
+                disabled={addedIds.has(anime.bangumi_id)}
                 onClick={() => handleAdd(anime)}
               >
-                + 添加追番
+                {addedIds.has(anime.bangumi_id) ? '已追番' : '+ 添加追番'}
               </Button>
             </CardContent>
           </Card>

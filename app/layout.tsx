@@ -16,6 +16,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Link href="/" className="text-lg font-bold">追番记录</Link>
             <nav className="flex gap-4 text-sm">
               <Link href="/" className="text-muted-foreground hover:text-foreground transition-colors">首页</Link>
+              <Link href="/season" className="text-muted-foreground hover:text-foreground transition-colors">新番</Link>
               <Link href="/search" className="text-muted-foreground hover:text-foreground transition-colors">搜索</Link>
               <Link href="/timeline" className="text-muted-foreground hover:text-foreground transition-colors">时间线</Link>
             </nav>
