@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import db from '@/lib/db';
+import { getSubject } from '@/lib/bangumi';
 import type { WatchStatus } from '@/lib/types';
 
 export async function GET(request: NextRequest) {
@@ -39,6 +40,16 @@ export async function POST(request: NextRequest) {
     VALUES (?, ?)
   `);
   insertWatch.run(bangumi_id, status || 'planned');
+
+  if (!total_episodes) {
+    try {
+      const detail = await getSubject(bangumi_id);
+      if (detail.total_episodes) {
+        db.prepare('UPDATE anime SET total_episodes = ? WHERE bangumi_id = ?')
+          .run(detail.total_episodes, bangumi_id);
+      }
+    } catch {}
+  }
 
   return NextResponse.json({ success: true });
 }

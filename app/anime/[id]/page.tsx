@@ -73,7 +73,16 @@ export default function AnimeDetailPage({ params }: { params: Promise<{ id: stri
             <CardContent className="space-y-4">
               <div className="flex items-center gap-4">
                 <label className="text-sm">状态：</label>
-                <Select value={record.status} onValueChange={(v) => updateField({ status: v })}>
+                <Select
+                  value={record.status}
+                  onValueChange={(v) => updateField({ status: v })}
+                  items={{
+                    watching: '在看',
+                    completed: '已看',
+                    planned: '想追',
+                    dropped: '弃坑',
+                  }}
+                >
                   <SelectTrigger className="w-32"><SelectValue /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="watching">在看</SelectItem>
