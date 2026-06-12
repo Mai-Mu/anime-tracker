@@ -6,9 +6,6 @@ export async function GET() {
     const data = await getCalendar();
     return NextResponse.json(data);
   } catch {
-    return NextResponse.json(
-      { error: 'Failed to fetch calendar' },
-      { status: 502 }
-    );
+    return NextResponse.json([]);
   }
 }

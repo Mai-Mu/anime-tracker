@@ -35,17 +35,22 @@ export default function SeasonPage() {
   const [loading, setLoading] = useState(true);
   const [addedIds, setAddedIds] = useState<Set<number>>(new Set());
 
-  useEffect(() => {
-    Promise.all([
+  const loadCalendar = () => {
+    return Promise.all([
       fetch('/api/bangumi/calendar').then((res) => res.json()),
       fetch('/api/anime').then((res) => res.json()),
     ])
       .then(([calendarData, watchData]) => {
-        const sorted = [...calendarData].sort((a: CalendarDay, b: CalendarDay) => a.weekday.id - b.weekday.id);
+        const list = Array.isArray(calendarData) ? calendarData : [];
+        const sorted = [...list].sort((a: CalendarDay, b: CalendarDay) => a.weekday.id - b.weekday.id);
         setCalendar(sorted);
         setAddedIds(new Set((watchData as { bangumi_id: number }[]).map((r) => r.bangumi_id)));
       })
       .finally(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    loadCalendar();
   }, []);
 
   const handleAdd = async (item: CalendarItem) => {
@@ -76,9 +81,17 @@ export default function SeasonPage() {
 
   return (
     <div className="container mx-auto py-8">
-      <h1 className="text-2xl font-bold mb-6">当季新番</h1>
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-2xl font-bold">当季新番</h1>
+        {calendar.length === 0 && (
+          <Button variant="outline" onClick={() => { setLoading(true); loadCalendar(); }}>重新加载</Button>
+        )}
+      </div>
 
       <div className="space-y-8">
+        {calendar.length === 0 && (
+          <p className="text-muted-foreground">获取新番数据失败，请稍后重试。</p>
+        )}
         {calendar.map((day) => (
           <div key={day.weekday.id}>
             <h2 className="text-lg font-semibold mb-4 pb-2 border-b">
