@@ -15,7 +15,9 @@ db.exec(`
     cover_url TEXT DEFAULT '',
     air_date TEXT DEFAULT '',
     total_episodes INTEGER DEFAULT 0,
-    summary TEXT DEFAULT ''
+    summary TEXT DEFAULT '',
+    season TEXT DEFAULT '',
+    bangumi_rating REAL
   );
 
   CREATE TABLE IF NOT EXISTS watching (
@@ -30,5 +32,8 @@ db.exec(`
     FOREIGN KEY (bangumi_id) REFERENCES anime(bangumi_id)
   );
 `);
+
+try { db.exec(`ALTER TABLE anime ADD COLUMN season TEXT DEFAULT ''`); } catch {}
+try { db.exec(`ALTER TABLE anime ADD COLUMN bangumi_rating REAL`); } catch {}
 
 export default db;

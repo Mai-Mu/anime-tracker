@@ -7,6 +7,8 @@ export interface Anime {
   air_date: string;
   total_episodes: number;
   summary: string;
+  season: string;
+  bangumi_rating: number | null;
 }
 
 export interface WatchRecord {
@@ -23,4 +25,6 @@ export interface WatchRecord {
   total_episodes?: number;
   air_date?: string;
   summary?: string;
+  season?: string;
+  bangumi_rating?: number | null;
 }

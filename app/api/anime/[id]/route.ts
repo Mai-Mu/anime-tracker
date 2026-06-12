@@ -9,7 +9,7 @@ export async function GET(
   const bangumiId = parseInt(id);
 
   const row = db.prepare(`
-    SELECT w.*, a.title, a.cover_url, a.total_episodes, a.air_date, a.summary
+    SELECT w.*, a.title, a.cover_url, a.total_episodes, a.air_date, a.summary, a.season, a.bangumi_rating
     FROM watching w
     JOIN anime a ON w.bangumi_id = a.bangumi_id
     WHERE w.bangumi_id = ?

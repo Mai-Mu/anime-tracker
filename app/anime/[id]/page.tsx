@@ -62,10 +62,17 @@ export default function AnimeDetailPage({ params }: { params: Promise<{ id: stri
         <div className="space-y-6">
           <div>
             <h1 className="text-3xl font-bold">{record.title}</h1>
-            <div className="flex items-center gap-2 mt-2">
+            <div className="flex items-center gap-3 mt-2 flex-wrap">
               <StatusBadge status={record.status} />
-              <span className="text-muted-foreground">{record.air_date}</span>
+              {record.air_date && <span className="text-sm text-muted-foreground">首播：{record.air_date}</span>}
+              {record.season && <span className="text-sm text-muted-foreground">季度：{record.season}</span>}
+              {record.bangumi_rating != null && (
+                <span className="text-sm text-yellow-600">Bangumi {record.bangumi_rating.toFixed(1)}</span>
+              )}
             </div>
+            {record.started_at && (
+              <p className="text-xs text-muted-foreground mt-1">追番时间：{record.started_at}</p>
+            )}
           </div>
 
           <Card>

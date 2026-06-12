@@ -9,7 +9,9 @@ interface BangumiSubject {
   images: { large: string; common: string };
   date: string;
   eps: number;
+  total_episodes: number;
   summary: string;
+  rating: { score: number } | null;
 }
 
 interface BangumiSearchResult {
@@ -40,6 +42,8 @@ export async function searchAnime(keyword: string): Promise<Anime[]> {
     air_date: item.air_date || '',
     total_episodes: item.eps || 0,
     summary: '',
+    season: '',
+    bangumi_rating: null,
   }));
 }
 
@@ -80,7 +84,9 @@ export async function getSubject(subjectId: number): Promise<Anime> {
     title: data.name_cn || data.name,
     cover_url: data.images?.large || data.images?.common || '',
     air_date: data.date || '',
-    total_episodes: data.eps || 0,
+    total_episodes: data.total_episodes || data.eps || 0,
     summary: data.summary || '',
+    season: '',
+    bangumi_rating: data.rating?.score ?? null,
   };
 }
