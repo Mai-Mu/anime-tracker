@@ -107,7 +107,6 @@ export default function SeasonPage() {
                         alt={item.name_cn || item.name}
                         fill
                         className="object-cover"
-                        unoptimized
                       />
                     ) : (
                       <div className="flex items-center justify-center h-full text-muted-foreground text-sm">

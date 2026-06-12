@@ -35,7 +35,6 @@ export function AnimeCard({ record, onUpdate }: AnimeCardProps) {
               alt={record.title || ''}
               fill
               className="object-cover"
-              unoptimized
             />
           ) : (
             <div className="flex items-center justify-center h-full text-muted-foreground">

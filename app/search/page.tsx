@@ -74,7 +74,6 @@ export default function SearchPage() {
                   alt={anime.title}
                   fill
                   className="object-cover"
-                  unoptimized
                 />
               ) : (
                 <div className="flex items-center justify-center h-full text-muted-foreground">
